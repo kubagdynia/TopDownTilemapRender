@@ -3,19 +3,27 @@ using SFML.System;
 using SFML.Window;
 using SFML.Graphics;
 using TopDownTilemapRender.Core;
+using TopDownTilemapRender.Core.Map;
+using System.IO;
 
 namespace TopDownTilemapRender
 {
     public class Game : BaseGame
     {
+        private readonly Map _map;
+
         public Game()
             : base(new Vector2u(1440, 810), "My World", Color.Black, 60, false, true)
         {
-
+            _map = new Map();
         }
 
         protected override void LoadContent()
         {
+            var mapPath = Path.Combine(
+                Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]), "res", "maps", "tf_jungle_map.tmx");
+
+            _map.Load(mapPath);
         }
 
         protected override void Initialize()

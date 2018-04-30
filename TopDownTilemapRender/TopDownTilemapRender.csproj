@@ -17,8 +17,13 @@
     <CSFMLFiles Include="..\ExtLibs\SFML.Net\extlibs\lib-x64\*.*" />
   </ItemGroup>
   
+  <ItemGroup>
+    <MapsFiles Include="..\Res\Maps\*.*" />
+  </ItemGroup>
+  
   <Target Name="CopyFiles" AfterTargets="AfterBuild">
     <Copy SourceFiles="@(CSFMLFiles)" DestinationFolder="$(OutDir)\res\dll" SkipUnchangedFiles="true" />
+	<Copy SourceFiles="@(MapsFiles)" DestinationFolder="$(OutDir)\res\maps" SkipUnchangedFiles="true" />
   </Target>
 
 </Project>
