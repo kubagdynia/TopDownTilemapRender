@@ -26,7 +26,6 @@ namespace TopDownTilemapRender.Core.Map
             // Draw only visible tiles
             var view = target.GetView();
 
-            //var size = GetViewSize(view);
             _size = GetViewSize(view);
 
             _translation = GetViewCenter(view) - _size / 2.0f;

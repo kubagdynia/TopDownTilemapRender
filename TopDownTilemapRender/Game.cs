@@ -12,6 +12,10 @@ namespace TopDownTilemapRender
     public class Game : BaseGame
     {
         private readonly Map _map;
+
+        private Font _font;
+
+        private View _infoHudView;
         
         private Vector2f _cameraPosition;
 
@@ -32,11 +36,19 @@ namespace TopDownTilemapRender
                 Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]), "res", "maps", "tf_jungle_map.tmx");
 
             _map.Load(mapPath);
+            
+            var fontPath = Path.Combine(
+                Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]), "res", "fonts", "arial.ttf");
+            
+            _font = new Font(fontPath);
         }
 
         protected override void Initialize()
         {
-
+            _infoHudView = new View()
+            {
+                Viewport = new FloatRect(0.75f, 0, 0.25f, 0.25f),
+            };
         }
 
         protected override void Update(float deltaTime)
@@ -87,6 +99,8 @@ namespace TopDownTilemapRender
             Window.Draw(_map.GetForegroundTileMap());
             
             DrawPlayer();
+
+            DrawInfoHud();
         }
 
         protected override void KeyPressed(object sender, KeyEventArgs e)
@@ -165,10 +179,11 @@ namespace TopDownTilemapRender
         }
         
         private Vector2f GetCameraStartPosition()
-        {
+        {   
             return new Vector2f(
-                (Window.Size.X / 2 - 8) / _map.MapData.TileWorldDimension / _map.MapData.MapZoomFactor,
-                (Window.Size.Y / 2 - 8) / _map.MapData.TileWorldDimension / _map.MapData.MapZoomFactor);
+                (Window.Size.X / 2 - _map.MapData.TileSize.X / 2) / _map.MapData.TileWorldDimension / _map.MapData.MapZoomFactor,
+                (Window.Size.Y / 2 - _map.MapData.TileSize.Y / 2) / _map.MapData.TileWorldDimension / _map.MapData.MapZoomFactor
+            );
         }
         
         private void DrawPlayer()
@@ -184,6 +199,36 @@ namespace TopDownTilemapRender
                     FillColor = new Color(25, 86, 255, 100)
                 };
             Window.Draw(colRectangle);
+        }
+
+        private void DrawInfoHud()
+        {
+            //TODO: this should be optimized
+            
+            Window.SetView(_infoHudView);
+            
+            var rectangle =
+                new RectangleShape(new Vector2f(900, 500))
+                {
+                    Position = new Vector2f(50, 50),
+                    OutlineColor = new Color(48, 48, 48, 230),
+                    OutlineThickness = 10,
+                    FillColor = new Color(48, 48, 48, 180)
+                };
+            
+            Window.Draw(rectangle);
+            
+            var text = new Text()
+            {
+                DisplayedString = "Move - Arrows\n\nZoom - PageUp, PageDown\n\nQ - Exit",
+                Font = _font,
+                CharacterSize = 70,
+                FillColor = Color.White,
+                Style = Text.Styles.Regular,
+                Position = new Vector2f(60, 80)
+            };
+            
+            Window.Draw(text);
         }
     }
 }

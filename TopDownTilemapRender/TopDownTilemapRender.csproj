@@ -15,8 +15,12 @@
   <ItemGroup>
     <MapsFiles Include="../Res/Maps/*.*" />
   </ItemGroup>
+  <ItemGroup>
+    <FontsFiles Include="../Res/Fonts/*.*" />
+  </ItemGroup>
   <Target Name="CopyFiles" AfterTargets="AfterBuild">
     <Copy SourceFiles="@(CSFMLFiles)" DestinationFolder="$(OutDir)/res/dll" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(MapsFiles)" DestinationFolder="$(OutDir)/res/maps" SkipUnchangedFiles="true" />
+	<Copy SourceFiles="@(FontsFiles)" DestinationFolder="$(OutDir)/res/fonts" SkipUnchangedFiles="true" />
   </Target>
 </Project>
