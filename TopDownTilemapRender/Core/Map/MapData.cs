@@ -9,7 +9,12 @@ namespace TopDownTilemapRender.Core.Map
     {
         public int TileWorldDimension { get; } = 2;
 
-        public float MapZoomFactor { get; set; } = 0.7f;
+        private float _mapZoomFactor = 0.6f;
+        public float MapZoomFactor
+        {
+            get => _mapZoomFactor;
+            set => _mapZoomFactor = value > 0.01f ? value : 0.01f;
+        }
 
         public Vector2i MapSize { get; set; }
         public Vector2i TileSize { get; set; }

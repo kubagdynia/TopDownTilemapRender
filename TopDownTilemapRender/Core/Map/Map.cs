@@ -1,4 +1,8 @@
-﻿namespace TopDownTilemapRender.Core.Map
+﻿using System;
+using SFML.Graphics;
+using SFML.System;
+
+namespace TopDownTilemapRender.Core.Map
 {
     public class Map
     {
@@ -17,6 +21,28 @@
             MapLoader.LoadMap(filename, MapData);
             
             LoadTileMaps();
+        }
+        
+        public void SetWorldView(RenderTarget target, Vector2f center)
+        {
+            // TODO: this part should be optimized
+            var view = new View
+            {
+                Size = new Vector2f(target.Size.X, target.Size.Y),
+                Viewport = new FloatRect(0f, 0f, 1.0f, 1.0f),
+            };
+            view.Zoom(MapData.MapZoomFactor);
+
+            var camCenterX = Math.Max(
+                target.Size.X / 2.0f * MapData.MapZoomFactor,
+                Math.Min(MapData.MapRec.Width * MapData.TileWorldDimension - target.Size.X / 2.0f * MapData.MapZoomFactor, center.X));
+            
+            var camCenterY = Math.Max(target.Size.Y / 2.0f * MapData.MapZoomFactor,
+                Math.Min(MapData.MapRec.Height * MapData.TileWorldDimension  - target.Size.Y / 2.0f * MapData.MapZoomFactor, center.Y));
+
+            view.Center = new Vector2f(camCenterX, camCenterY);
+
+            target.SetView(view);
         }
         
         private void LoadTileMaps()
