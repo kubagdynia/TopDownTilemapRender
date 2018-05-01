@@ -37,26 +37,19 @@ namespace TopDownTilemapRender
         }
 
         protected override void Render(float deltaTime)
-        {
-            // Draw green rectangle
-            RectangleShape rectangle = new RectangleShape(new Vector2f(200, 200))
-            {
-                FillColor = Color.Green
-            };
-
-            // Set the rectangle in the center of the screen
-            rectangle.Position = new Vector2f(
-                (Window.Size.X / 2) - rectangle.Size.X / 2,
-                (Window.Size.Y / 2) - rectangle.Size.Y / 2);
-
-            Window.Draw(rectangle);
+        {   
+            Window.Draw(_map.GetBackgroundTileMap());
+            Window.Draw(_map.GetForegroundTileMap());
         }
 
         protected override void KeyPressed(object sender, KeyEventArgs e)
         {
-            base.KeyPressed(sender, e);
+            if (e.Code == Keyboard.Key.Q)
+            {
+                Window.Close();
+            }
         }
-
+        
         protected override void KeyReleased(object sender, KeyEventArgs e)
         {
 
@@ -87,14 +80,14 @@ namespace TopDownTilemapRender
 
         }
 
-        protected override void Quit()
-        {
-            Console.WriteLine("Quit Game :(");
-        }
-
         protected override void Resize(uint width, uint height)
         {
 
+        }
+        
+        protected override void Quit()
+        {
+            Console.WriteLine("Quit Game :(");
         }
     }
 }

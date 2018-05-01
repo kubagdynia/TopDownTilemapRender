@@ -125,13 +125,7 @@ namespace TopDownTilemapRender.Core
 
         protected abstract void Resize(uint width, uint height);
 
-        protected virtual void KeyPressed(object sender, KeyEventArgs e)
-        {
-            if (e.Code == Keyboard.Key.Q)
-            {
-                Window.Close();
-            }
-        }
+        protected abstract void KeyPressed(object sender, KeyEventArgs e);
 
         protected abstract void KeyReleased(object sender, KeyEventArgs e);
 
