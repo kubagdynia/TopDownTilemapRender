@@ -12,6 +12,8 @@ namespace SFML.System
     [StructLayout(LayoutKind.Sequential)]
     public struct Vector2f : IEquatable<Vector2f>
     {
+        public static readonly Vector2f Zero = new Vector2f(0, 0);
+        
         ////////////////////////////////////////////////////////////
         /// <summary>
         /// Construct the vector from its coordinates

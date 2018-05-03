@@ -7,17 +7,19 @@ using TopDownTilemapRender.Core.Map;
 using System.IO;
 using TopDownTilemapRender.Core.Extensions;
 
-namespace TopDownTilemapRender
+namespace TopDownTilemapRender.GameLogic
 {
     public class Game : BaseGame
     {
         private readonly Map _map;
 
         private Font _font;
-
-        private View _infoHudView;
         
         private Vector2f _cameraPosition;
+
+        private Player _player;
+
+        private InfoHud _infoHud;
 
         public Game()
             : base(new Vector2u(1440, 810), "My World", Color.Black, 60, false, true)
@@ -27,7 +29,6 @@ namespace TopDownTilemapRender
             Console.WriteLine(Window.Size);
             
             _cameraPosition = GetCameraStartPosition();
-            
         }
 
         protected override void LoadContent()
@@ -45,10 +46,9 @@ namespace TopDownTilemapRender
 
         protected override void Initialize()
         {
-            _infoHudView = new View()
-            {
-                Viewport = new FloatRect(0.75f, 0, 0.25f, 0.25f),
-            };
+            _player = new Player(_map.MapData.TileSize, _map.MapData.TileWorldDimension);
+            
+            _infoHud = new InfoHud(_font);
         }
 
         protected override void Update(float deltaTime)
@@ -93,16 +93,13 @@ namespace TopDownTilemapRender
 
         protected override void Render(float deltaTime)
         {
-            _map.SetWorldView(Window, _cameraPosition);
-            
-            Window.Draw(_map.GetBackgroundTileMap());
-            Window.Draw(_map.GetForegroundTileMap());
+            DrawTileMap();
             
             DrawPlayer();
 
             DrawInfoHud();
         }
-
+        
         protected override void KeyPressed(object sender, KeyEventArgs e)
         {
             if (e.Code == Keyboard.Key.Q)
@@ -185,50 +182,24 @@ namespace TopDownTilemapRender
                 (Window.Size.Y / 2 - _map.MapData.TileSize.Y / 2) / _map.MapData.TileWorldDimension / _map.MapData.MapZoomFactor
             );
         }
+
+        private void DrawTileMap()
+        {
+            _map.SetWorldView(Window, _cameraPosition);
+            
+            Window.Draw(_map.GetBackgroundTileMap());
+            Window.Draw(_map.GetForegroundTileMap());
+        }
         
         private void DrawPlayer()
         {
-            var colRectangle =
-                new RectangleShape(new Vector2f(
-                    _map.MapData.TileSize.X * _map.MapData.TileWorldDimension,
-                    _map.MapData.TileSize.Y * _map.MapData.TileWorldDimension))
-                {
-                    Position = new Vector2f(_cameraPosition.X, _cameraPosition.Y),
-                    OutlineColor = new Color(25, 86, 255, 200),
-                    OutlineThickness = 2,
-                    FillColor = new Color(25, 86, 255, 100)
-                };
-            Window.Draw(colRectangle);
+            _player.SetPosition(_cameraPosition);
+            Window.Draw(_player);
         }
 
         private void DrawInfoHud()
         {
-            //TODO: this should be optimized
-            
-            Window.SetView(_infoHudView);
-            
-            var rectangle =
-                new RectangleShape(new Vector2f(900, 500))
-                {
-                    Position = new Vector2f(50, 50),
-                    OutlineColor = new Color(48, 48, 48, 230),
-                    OutlineThickness = 10,
-                    FillColor = new Color(48, 48, 48, 180)
-                };
-            
-            Window.Draw(rectangle);
-            
-            var text = new Text()
-            {
-                DisplayedString = "Move - Arrows\n\nZoom - PageUp, PageDown\n\nQ - Exit",
-                Font = _font,
-                CharacterSize = 70,
-                FillColor = Color.White,
-                Style = Text.Styles.Regular,
-                Position = new Vector2f(60, 80)
-            };
-            
-            Window.Draw(text);
+            Window.Draw(_infoHud);
         }
     }
 }

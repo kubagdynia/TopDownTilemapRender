@@ -1,10 +1,10 @@
-﻿using System;
+﻿using TopDownTilemapRender.GameLogic;
 
 namespace TopDownTilemapRender
 {
-    class Program
+    internal static class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             var game = new Game();
             game.Run();

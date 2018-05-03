@@ -10,17 +10,19 @@
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
-    <CSFMLFiles Include="../ExtLibs/SFML.Net/extlibs/lib-x64/*.*" />
-  </ItemGroup>
-  <ItemGroup>
-    <MapsFiles Include="../Res/Maps/*.*" />
-  </ItemGroup>
-  <ItemGroup>
-    <FontsFiles Include="../Res/Fonts/*.*" />
+    <CSFMLFiles Include="../ExtLibs/SFML.Net/extlibs/lib-x64/*.*">
+		<InProject>false</InProject>
+	</CSFMLFiles>
+	<MapsFiles Include="../Res/Maps/*.*">
+		<InProject>false</InProject>
+	</MapsFiles>
+	<FontsFiles Include="../Res/Fonts/*.*">
+		<InProject>false</InProject>
+	</FontsFiles>
   </ItemGroup>
   <Target Name="CopyFiles" AfterTargets="AfterBuild">
     <Copy SourceFiles="@(CSFMLFiles)" DestinationFolder="$(OutDir)/res/dll" SkipUnchangedFiles="true" />
     <Copy SourceFiles="@(MapsFiles)" DestinationFolder="$(OutDir)/res/maps" SkipUnchangedFiles="true" />
-	<Copy SourceFiles="@(FontsFiles)" DestinationFolder="$(OutDir)/res/fonts" SkipUnchangedFiles="true" />
+    <Copy SourceFiles="@(FontsFiles)" DestinationFolder="$(OutDir)/res/fonts" SkipUnchangedFiles="true" />
   </Target>
 </Project>
