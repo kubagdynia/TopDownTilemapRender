@@ -35,7 +35,7 @@ namespace TopDownTilemapRender.GameLogic
 
         private void CreateBackgroundRect()
         {
-            _backgroundRect = new RectangleShape(new Vector2f(900, 500))
+            _backgroundRect = new RectangleShape(new Vector2f(900, 650))
             {
                 Position = new Vector2f(50, 50),
                 OutlineColor = new Color(48, 48, 48, 230),
@@ -48,7 +48,7 @@ namespace TopDownTilemapRender.GameLogic
         {
             _text = new Text()
             {
-                DisplayedString = "Move - Arrows\n\nZoom - PageUp, PageDown\n\nQ - Exit",
+                DisplayedString = "Move - Arrows\n\nZoom - PageUp, PageDown\n\nShow Collisions - C\n\nQ - Exit",
                 Font = AssetManager.Instance.Font.Get("arial"),
                 CharacterSize = 70,
                 FillColor = Color.White,

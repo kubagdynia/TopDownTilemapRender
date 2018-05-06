@@ -29,5 +29,20 @@ namespace TopDownTilemapRender.Core.Map
 
         private List<TmxLayer> _foregroundTileLayers;
         public List<TmxLayer> ForegroundTileLayers => _foregroundTileLayers ?? (_foregroundTileLayers = new List<TmxLayer>());
+        
+        private CollisionLayer _collisionLayer;
+        public CollisionLayer CollisionLayer => _collisionLayer ?? (_collisionLayer = new CollisionLayer());
+        
+        public IEnumerable<DataStructures.IntRect> GetCollisionsNearby(DataStructures.IntRect target, int distance)
+        {
+            foreach (var collisionRect in CollisionLayer.CollisionRects)
+            {
+                if (collisionRect.Right > target.Left - distance && collisionRect.Left < target.Right + distance &&
+                    collisionRect.Bottom > target.Top - distance && collisionRect.Top < target.Bottom + distance)
+                {
+                    yield return collisionRect;
+                }
+            }
+        }
     }
 }

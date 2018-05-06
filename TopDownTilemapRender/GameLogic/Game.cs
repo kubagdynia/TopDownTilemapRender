@@ -19,6 +19,8 @@ namespace TopDownTilemapRender.GameLogic
 
         private InfoHud _infoHud;
 
+        private bool _showCollisions = true;
+
         public Game()
             : base(new Vector2u(1440, 810), "My World", Color.Black, 60, false, true)
         {
@@ -70,7 +72,7 @@ namespace TopDownTilemapRender.GameLogic
         {
             if (Keyboard.IsKeyPressed(Keyboard.Key.PageUp) || Keyboard.IsKeyPressed(Keyboard.Key.PageDown))
             {
-                var changeValue = 0.005f;
+                var changeValue = 0.01f;
 
                 if (Keyboard.IsKeyPressed(Keyboard.Key.PageUp))
                 {
@@ -88,6 +90,8 @@ namespace TopDownTilemapRender.GameLogic
         {
             DrawTileMap();
 
+            DrawCollisions();
+            
             DrawInfoHud();
         }
         
@@ -97,6 +101,12 @@ namespace TopDownTilemapRender.GameLogic
             {
                 Window.Close();
             }
+
+            if (e.Code == Keyboard.Key.C)
+            {
+                _showCollisions = !_showCollisions;
+            }
+            
         }
         
         protected override void KeyReleased(object sender, KeyEventArgs e)
@@ -194,6 +204,27 @@ namespace TopDownTilemapRender.GameLogic
         private void DrawInfoHud()
         {
             Window.Draw(_infoHud);
+        }
+
+        private void DrawCollisions()
+        {
+            if (!_showCollisions)
+            {
+                return;
+            }
+            
+            foreach (var item in _map.MapData.CollisionLayer.CollisionRects)
+            {
+                var colRectangle = new RectangleShape(new Vector2f(item.Width, item.Height))
+                {
+                    Position = new Vector2f(item.Left, item.Top),
+                    OutlineColor = new Color(255, 0, 0, 200),
+                    OutlineThickness = 2,
+                    FillColor = new Color(255, 0, 0, 50)
+                };
+
+                Window.Draw(colRectangle);
+            }
         }
     }
 }

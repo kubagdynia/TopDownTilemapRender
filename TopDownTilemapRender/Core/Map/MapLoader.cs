@@ -14,6 +14,8 @@ namespace TopDownTilemapRender.Core.Map
         private const string BackgroundGroupLayerName = "Background";
 
         private const string ForegroundGroupLayerName = "Foreground";
+        
+        private const string CollisionLayerName = "Collisions";
 
         public static void LoadMap(string mapResourceName, MapData data)
         {
@@ -58,6 +60,8 @@ namespace TopDownTilemapRender.Core.Map
                 LoadBackgroundLayer(data, group);
                 LoadForegroundLayer(data, group);
             }
+
+            LoadObjectLayers(map, data);
             
 #if DEBUG
             "Tile layers loaded".Log();
@@ -126,6 +130,36 @@ namespace TopDownTilemapRender.Core.Map
             "Foreground layer loaded".Log();
 #endif
         }
+
+        private static void LoadObjectLayers(TmxMap map, MapData data)
+        {
+            foreach (var objectGroup in map.ObjectGroups)
+            {
+                LoadCollisionLayer(data, objectGroup);
+            }
+        }
+        
+        private static void LoadCollisionLayer(MapData data, TmxObjectGroup objectGroup)
+        {
+            if (!ObjectGroupExists(objectGroup, CollisionLayerName) || !ObjectGroupHasObjects(objectGroup))
+            {
+                return;
+            }
+
+            data.CollisionLayer.Name = objectGroup.Name;
+            data.CollisionLayer.Visible = objectGroup.Visible;
+            data.CollisionLayer.Opacity = objectGroup.Opacity;
+
+            foreach (var value in objectGroup.Objects)
+            {
+                var collisionRect = new DataStructures.IntRect(
+                    value.X, value.Y, value.X + value.Width, value.Y + value.Height);
+                
+                collisionRect *= data.TileWorldDimension;
+
+                data.CollisionLayer.CollisionRects.Add(collisionRect);
+            }
+        }
         
         private static bool BackgroundTileLayersExists(TmxMap map)
         {
@@ -135,6 +169,16 @@ namespace TopDownTilemapRender.Core.Map
         private static bool TilesetsExists(TmxMap map)
         {
             return map.Tilesets != null && map.Tilesets.Any();
+        }
+        
+        private static bool ObjectGroupExists(TmxObjectGroup objectGroup, string name)
+        {
+            return objectGroup != null && string.Equals(objectGroup.Name, name, StringComparison.InvariantCultureIgnoreCase);
+        }
+        
+        private static bool ObjectGroupHasObjects(TmxObjectGroup objectGroup)
+        {
+            return objectGroup?.Objects != null && objectGroup.Objects.Any();
         }
     }
 }
