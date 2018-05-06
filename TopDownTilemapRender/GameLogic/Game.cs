@@ -4,16 +4,14 @@ using SFML.Window;
 using SFML.Graphics;
 using TopDownTilemapRender.Core;
 using TopDownTilemapRender.Core.Map;
-using System.IO;
 using TopDownTilemapRender.Core.Extensions;
+using TopDownTilemapRender.Core.Managers;
 
 namespace TopDownTilemapRender.GameLogic
 {
     public class Game : BaseGame
     {
         private readonly Map _map;
-
-        private Font _font;
         
         private Vector2f _cameraPosition;
 
@@ -32,23 +30,18 @@ namespace TopDownTilemapRender.GameLogic
         }
 
         protected override void LoadContent()
-        {
-            var mapPath = Path.Combine(
-                Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]), "res", "maps", "tf_jungle_map.tmx");
-
-            _map.Load(mapPath);
+        {            
+            AssetManager.Instance.Map.LoadOnly("jungleMap", AssetManager.Instance.GetMapPath("tf_jungle_map.tmx"));
+            _map.Load("jungleMap");
             
-            var fontPath = Path.Combine(
-                Path.GetDirectoryName(Environment.GetCommandLineArgs()[0]), "res", "fonts", "arial.ttf");
-            
-            _font = new Font(fontPath);
+            AssetManager.Instance.Font.LoadOnly("arial", AssetManager.Instance.GetFontPath("arial.ttf"));
         }
 
         protected override void Initialize()
         {
             _player = new Player(_map.MapData.TileSize, _map.MapData.TileWorldDimension);
             
-            _infoHud = new InfoHud(_font);
+            _infoHud = new InfoHud();
         }
 
         protected override void Update(float deltaTime)

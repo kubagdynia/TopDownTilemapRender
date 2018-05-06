@@ -11,14 +11,14 @@
   </PropertyGroup>
   <ItemGroup>
     <CSFMLFiles Include="../ExtLibs/SFML.Net/extlibs/lib-x64/*.*">
-		<InProject>false</InProject>
-	</CSFMLFiles>
-	<MapsFiles Include="../Res/Maps/*.*">
-		<InProject>false</InProject>
-	</MapsFiles>
-	<FontsFiles Include="../Res/Fonts/*.*">
-		<InProject>false</InProject>
-	</FontsFiles>
+      <InProject>false</InProject>
+    </CSFMLFiles>
+    <MapsFiles Include="../Res/Maps/*.*">
+      <InProject>false</InProject>
+    </MapsFiles>
+    <FontsFiles Include="../Res/Fonts/*.*">
+      <InProject>false</InProject>
+    </FontsFiles>
   </ItemGroup>
   <Target Name="CopyFiles" AfterTargets="AfterBuild">
     <Copy SourceFiles="@(CSFMLFiles)" DestinationFolder="$(OutDir)/res/dll" SkipUnchangedFiles="true" />

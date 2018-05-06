@@ -4,6 +4,7 @@ using SFML.Graphics;
 using SFML.System;
 using TiledSharp;
 using TopDownTilemapRender.Core.Extensions;
+using TopDownTilemapRender.Core.Managers;
 using TopDownTilemapRender.Core.Map.Exceptions;
 
 namespace TopDownTilemapRender.Core.Map
@@ -13,11 +14,11 @@ namespace TopDownTilemapRender.Core.Map
         private const string BackgroundGroupLayerName = "Background";
 
         private const string ForegroundGroupLayerName = "Foreground";
-        
-        public static void LoadMap(string filepath, MapData data)
-        {
-            var map = new TmxMap(filepath);
 
+        public static void LoadMap(string mapResourceName, MapData data)
+        {
+            var map = AssetManager.Instance.Map.Get(mapResourceName);
+            
             // Load resources
             LoadMapProperties(map, data);
             LoadTileLayers(map, data);

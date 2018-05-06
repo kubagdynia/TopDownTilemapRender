@@ -1,5 +1,6 @@
 ﻿using SFML.Graphics;
 using SFML.System;
+using TopDownTilemapRender.Core.Managers;
 
 namespace TopDownTilemapRender.GameLogic
 {
@@ -7,16 +8,12 @@ namespace TopDownTilemapRender.GameLogic
     {
         private readonly View _infoHudView;
 
-        private readonly Font _font;
-
         private RectangleShape _backgroundRect;
 
         private Text _text;
 
-        public InfoHud(Font font)
-        {
-            _font = font;
-            
+        public InfoHud()
+        {   
             _infoHudView = new View()
             {
                 // Top right corner
@@ -52,7 +49,7 @@ namespace TopDownTilemapRender.GameLogic
             _text = new Text()
             {
                 DisplayedString = "Move - Arrows\n\nZoom - PageUp, PageDown\n\nQ - Exit",
-                Font = _font,
+                Font = AssetManager.Instance.Font.Get("arial"),
                 CharacterSize = 70,
                 FillColor = Color.White,
                 Style = Text.Styles.Regular,
