@@ -77,7 +77,7 @@ namespace TopDownTilemapRender.GameLogic
         {
             if (Keyboard.IsKeyPressed(Keyboard.Key.PageUp) || Keyboard.IsKeyPressed(Keyboard.Key.PageDown))
             {
-                var changeValue = 0.01f;
+                var changeValue = 0.005f;
 
                 if (Keyboard.IsKeyPressed(Keyboard.Key.PageUp))
                 {
@@ -94,8 +94,6 @@ namespace TopDownTilemapRender.GameLogic
         protected override void Render(float deltaTime)
         {
             DrawTileMap();
-            
-            DrawPlayer();
 
             DrawInfoHud();
         }
@@ -188,6 +186,9 @@ namespace TopDownTilemapRender.GameLogic
             _map.SetWorldView(Window, _cameraPosition);
             
             Window.Draw(_map.GetBackgroundTileMap());
+            
+            DrawPlayer();
+            
             Window.Draw(_map.GetForegroundTileMap());
         }
         
