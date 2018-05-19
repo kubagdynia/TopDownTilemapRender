@@ -1,4 +1,6 @@
-﻿using SFML.Graphics;
+﻿using System;
+using System.Diagnostics;
+using SFML.Graphics;
 using SFML.System;
 using SFML.Window;
 
@@ -16,24 +18,27 @@ namespace TopDownTilemapRender.Core
 
         private Time Time { get; set; }
 
+        protected BaseGame(VideoMode videoMode, string windowTitle, Color clearColor, uint framerateLimit = 60,
+            bool vsync = false) : this(new RenderWindow(videoMode, windowTitle, Styles.Fullscreen), clearColor, framerateLimit, vsync)
+        {
+            
+        }
+        
         protected BaseGame(Vector2u windowSize, string windowTitle, Color clearColor, uint framerateLimit = 60,
-            bool fullScreen = false, bool vsync = false)
+            bool vsync = false) : this(new RenderWindow(new VideoMode(windowSize.X, windowSize.Y, 32), windowTitle, Styles.Default), clearColor, framerateLimit, vsync)
+        {
+
+        }
+
+        protected BaseGame(RenderWindow renderWindow, Color clearColor, uint framerateLimit = 60, bool vsync = false)
         {
             _clearColor = clearColor;
 
             // The frequency at which our step will execute
             _updateRate = 1.0f / framerateLimit;
 
-            if (fullScreen)
-            {
-                Window = new RenderWindow(new VideoMode(windowSize.X, windowSize.Y, 32), windowTitle, Styles.Fullscreen);
-            }
-            else
-            {
-                Window = new RenderWindow(new VideoMode(windowSize.X, windowSize.Y, 32), windowTitle, Styles.Default);
-
-            }
-
+            Window = renderWindow;
+            
             if (vsync)
             {
                 Window.SetVerticalSyncEnabled(true);

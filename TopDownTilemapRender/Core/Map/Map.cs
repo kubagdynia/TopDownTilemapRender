@@ -45,6 +45,11 @@ namespace TopDownTilemapRender.Core.Map
             target.SetView(view);
         }
         
+        private float Lerp(float value, float start, float end)
+        {
+            return start + (end - start) * value;
+        }
+        
         private void LoadTileMaps()
         {
             _backgroundTileMap = new TileMap();

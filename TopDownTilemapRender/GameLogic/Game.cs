@@ -22,7 +22,8 @@ namespace TopDownTilemapRender.GameLogic
         private bool _showCollisions = true;
 
         public Game()
-            : base(new Vector2u(1440, 810), "My World", Color.Black, 60, false, true)
+            //: base(new Vector2u(1440, 810), "My World", Color.Black, 60, true)
+            : base(VideoMode.DesktopMode, "My World", Color.Black, 60, true)
         {
             _map = new Map();
 
@@ -49,6 +50,8 @@ namespace TopDownTilemapRender.GameLogic
         protected override void Update(float deltaTime)
         {
             MapZoom(deltaTime);
+            
+            //TODO: change the player's position, not the camera
             
             if (Keyboard.IsKeyPressed(Keyboard.Key.Down))
             {

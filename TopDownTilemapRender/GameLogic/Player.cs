@@ -9,7 +9,7 @@ namespace TopDownTilemapRender.GameLogic
         
         public Player(Vector2i size, int tileDimension)
         {
-            CreatePlayerBody(size, Vector2f.Zero, tileDimension);
+            CreatePlayerBody(size, new Vector2f(100, 100), tileDimension);
         }
 
         public void SetPosition(Vector2f position)
